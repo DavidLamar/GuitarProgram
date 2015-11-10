@@ -61,7 +61,10 @@ public class GuitarGUI extends JFrame{
 		
 		//******************TESTING STUFF
 		gModel = new GuitarModel(20, GuitarModel.STANDARD, 6);
-		gModel.setChord(Chord.G);
+		gModel.setChord(Chord.E);
+		
+		
+
 		
 		//Testing to make sure notes are right
 //		for(int i = 0; i < 6; i++){
@@ -73,6 +76,8 @@ public class GuitarGUI extends JFrame{
 		
 		//Fret board stuff:
 		boolean[][] frets = gModel.getFretBoard();
+		
+		
 		for(int i = 0; i < frets.length; i++){
 			for(int j = 0; j < frets[i].length; j++){
 				if(frets[i][j] == true){
@@ -84,6 +89,15 @@ public class GuitarGUI extends JFrame{
 			}
 			System.out.println();
 		}
+		
+		System.out.println();
+		
+		Fingering[] fingerings = gModel.getFingerings();
+		
+		for(int i = 0; i < fingerings.length; i++){
+			System.out.println(fingerings[i]);
+		}
+
 		
 		
 		//*******************END TESTIN STUFF

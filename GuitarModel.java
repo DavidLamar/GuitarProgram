@@ -28,9 +28,6 @@ public class GuitarModel {
 	/* A boolean array that outputs true if a given fret on a given string is part of the chord */
 	private boolean[][] stringValues;
 	
-	/* All of the practical fingerings for a given chord */
-	private boolean[][][] fingerings;
-	
 	/* The current chord being checked */
 	private Chord chord;
 	
@@ -111,8 +108,6 @@ public class GuitarModel {
 				}
 			}
 		}
-		//Gives us our first value of the fingerings; it's just all the notes
-		//fingerings[0] = stringValues; 
 	}
 	
 	
@@ -121,14 +116,100 @@ public class GuitarModel {
 	 * 
 	 * @return The fingerings
 	 */
-	public boolean[][][] getFingerings(){
-		for(){
-			for(){
-				
+	public Fingering[] getFingerings(){
+		
+		boolean[] chordComplete = new boolean[strings.length];
+		
+		Fingering temp  = new Fingering(strings.length, fretNumber);
+		
+		Fingering[] fingerings = new Fingering[10];
+		
+		int noteNumber = 0;
+		int fretCount = 0;
+		int chordNumber = 0;
+		boolean sameCheck = false;
+		boolean complete = false;
+		boolean barCheck = false;
+		
+		
+		for(int fret = 0; fret < fretNumber; fret++){ //Go for the number of frets
+			fretCount ++;
+			sameCheck = false; //reset sameCheck because we're no longer on the same fret
+			
+			if(!allFalse(chordComplete)){
+				barCheck = true;
 			}
+			
+			//Makes the fingering
+			for(int str = 0; str < strings.length; str++){ //Go for the number of strings
+				if(fret > fretNumber - 1){
+					break;
+				}
+				
+				if(stringValues[str][fret]){ //Check if current string, current fret is true
+					if(!chordComplete[str]){ //check if chord is already complete here
+						
+						
+						temp.setPos(str, fret, true); //Adds a true to the current temp
+						
+						if(!sameCheck || barCheck){ //Checks to see if this fret already has other 
+							noteNumber++; //Increase number of notes in the chord
+						}
+		
+						chordComplete[str] = true; //Chord is now complete at this string
+						sameCheck = true;
+					}
+				}
+			}
+			
+			//Does a reset
+			if(noteNumber > 4 || fretCount > 4){
+				
+				//Resets temp so that it can be reused.
+				temp  = new Fingering(strings.length, fretNumber);
+				
+				chordComplete = new boolean[strings.length];
+				
+				sameCheck = false; 
+				noteNumber = 0;
+				fret -= (fretCount - 1); // sets fret back
+				fretCount = 0;
+				complete = false;
+				barCheck = false;
+			}
+			
+			//Checks if the entire array is true
+			complete = allTrue(chordComplete);
+
+			
+			if(complete){ //Checks if the chord is complete and returns a finished chord
+				
+				chordComplete = new boolean[strings.length];
+				
+				//Adds the current chord to the return variable
+				if(chordNumber < fingerings.length){
+					fingerings[chordNumber] = temp;
+					chordNumber ++;
+				}
+				
+				
+				//Resets temp so that it can be reused.
+				temp  = new Fingering(strings.length, fretNumber);
+				
+				
+				sameCheck = false; 
+				noteNumber = 0;
+				fret -= (fretCount - 1); // sets fret back
+				fretCount = 0;
+				complete = false;
+				barCheck = false;
+			}
+		
+			
 		}
 		
-		return null;
+		
+		return fingerings;
 	}
 	
 	
@@ -152,6 +233,16 @@ public class GuitarModel {
 	 */
 	public boolean[][] getFretBoard(){
 		return stringValues;
+	}
+	
+	private boolean allTrue(boolean[] arr){
+		for(boolean b : arr) if(!b) return false;
+		return true;
+	}
+	
+	private boolean allFalse(boolean[] arr){
+		for(boolean b : arr) if(b) return false;
+		return true;
 	}
 	
 }
