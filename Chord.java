@@ -12,21 +12,13 @@ package GuitarProgram;
 
 public class Chord {
 	
-	//All the chords (add as you go):
-	public static final Chord A = new Chord(new NoteArray(new Note[] {Note.A, Note.C_SHARP, Note.E}));
-	public static final Chord B = new Chord(new NoteArray(new Note[] {Note.B, Note.D_SHARP, Note.F}));
-	public static final Chord C = new Chord(new NoteArray(new Note[] {Note.C, Note.E, Note.G}));
-	public static final Chord D = new Chord(new NoteArray(new Note[] {Note.D, Note.F_SHARP, Note.A}));
-	public static final Chord E = new Chord(new NoteArray(new Note[] {Note.E, Note.G_SHARP, Note.B}));
-	public static final Chord F = new Chord(new NoteArray(new Note[] {Note.F, Note.A, Note.C}));
-	public static final Chord G = new Chord(new NoteArray(new Note[] {Note.G, Note.B, Note.D}));
-
-	
 	private NoteArray chord;
+	private String name;
 	
 	
-	public Chord(NoteArray chord){
+	public Chord(NoteArray chord, String name){
 		this.chord = chord;
+		this.name = name;
 	}
 	
 	public boolean contains(Note n){
@@ -36,5 +28,9 @@ public class Chord {
 			}
 		}
 		return false;
+	}
+	
+	public String getName(){
+		return name;
 	}
 }
